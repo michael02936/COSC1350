@@ -1,0 +1,33 @@
+ body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        header {
+            background-color: rgb(199, 157, 250);
+            padding: 20px;
+        }
+
+        img {
+            width: 300px;
+            height: 300px;
+            border: 3px solid black;
+        }
+
+        footer {
+            background-color: rgb(199, 157, 250);
+            padding: 20px;
+        }
+
+        #myName {
+            font-family: Georgia, serif;
+        } 
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 200px;
+            background-color: lightgray;
+        }
