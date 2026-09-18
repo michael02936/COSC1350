@@ -1,59 +1,59 @@
- body {
-            text-align: center;
-            font-family: Arial;
-        }
+body {
+    text-align: center;
+    font-family: Arial;
+    margin: 0;
+}
 
-        header {
-            background-color: rgb(199, 157, 250);
-            padding: 20px;
-        }
+.page {
+    display: flex;
+    min-height: 100vh;
+}
 
-        img {
-            width: 300px;
-            height: 300px;
-            border: 3px solid red;
-        }
-
-        footer {
-            background-color: rgb(199, 157, 250);
-            padding: 20px;
-        }
-
-        #myName {
-            font-family: Georgia, serif;
-        } 
-        
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100px;
-            height: 200px;
-            background-color: lightgray;
-        }
-        .left-sidebar {
-    position: absolute;
-    left: 0;
-    top: 0;
+.left-sidebar {
     width: 150px;
-    height: 100vh;    
+    background-color: lightgray;
+    flex-shrink: 0;
 }
 
 .left-sidebar img {
     width: 130px;
     height: 100vh;
+    object-fit: cover;
+}
+
+.main {
+    flex: 1;
 }
 
 .right-sidebar {
-    position: absolute;
-    right: 0;
-    top: 0;
     width: 150px;
-    height: 100vh;
+    background-color: lightgray;
+    flex-shrink: 0;
 }
 
 .right-sidebar img {
     width: 130px;
     height: 100vh;
+    object-fit: cover;
     transform: scaleX(-1);
+}
+
+header {
+    background-color: rgb(199, 157, 250);
+    padding: 20px;
+}
+
+img {
+    width: 300px;
+    height: 300px;
+    border: 3px solid red;
+}
+
+footer {
+    background-color: rgb(199, 157, 250);
+    padding: 20px;
+}
+
+#myName {
+    font-family: Georgia, serif;
 }
