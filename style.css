@@ -1,3 +1,4 @@
+
 body {
     text-align: center;
     font-family: Arial;
@@ -6,7 +7,7 @@ body {
 
 .page {
     display: grid;
-    grid-template-columns: 150px 1fr 150px;
+    grid-template-columns: 150px minmax(0, 1fr) 150px;
     align-items: stretch;
     min-height: 100vh;
 }
@@ -17,15 +18,18 @@ body {
 
 .left-sidebar img {
     width: 130px;
-    height: auto;
+    height: 100%;
     min-height: 100vh;
     object-fit: cover;
     position: sticky;
-    top 0;
+    top: 0;
 }
 
-.main {
+main {
     min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
 }
 
 .right-sidebar {
@@ -34,11 +38,11 @@ body {
 
 .right-sidebar img {
     width: 130px;
-    height: auto;
+    height: 100%;
     min-height: 100vh;
     object-fit: cover;
     position: sticky;
-    top 0;
+    top: 0;
     transform: scaleX(-1);
 }
 
@@ -47,16 +51,16 @@ header {
     padding: 20px;
 }
 
-.main > div {
+main > div {
     padding: 20px;
     box-sizing: border-box;
 }
 
 img {
-    border: 3px solid red;
+    border: 3px solid rgb(170, 255, 0);
 }
 
-.main > header img {
+main > header img {
     width: 300px;
     height: 300px;
 }
@@ -70,21 +74,15 @@ footer {
     font-family: Georgia, serif;
 }
 
-.main {
-    min-width: 0;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-}
-
-.main section {
+main section {
     width: 100%;
     box-sizing: border-box;
     padding: 0 20px;
 }
 
-.main p {
+main p {
     max-width: 100%;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
+    word-break: normal;
     box-sizing: border-box;
 }
