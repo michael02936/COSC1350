@@ -31,3 +31,29 @@
             height: 200px;
             background-color: lightgray;
         }
+        .left-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 150px;
+    height: 100vh;    
+}
+
+.left-sidebar img {
+    width: 130px;
+    height: 100vh;
+}
+
+.right-sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 150px;
+    height: 100vh;
+}
+
+.right-sidebar img {
+    width: 130px;
+    height: 100vh;
+    transform: scaleX(-1);
+}
