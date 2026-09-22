@@ -12,10 +12,6 @@ body {
     min-height: 100vh;
 }
 
-.left-sidebar {
-    background-color: lightgray;
-}
-
 .left-sidebar img {
     width: 130px;
     height: 100%;
@@ -30,10 +26,6 @@ main {
     width: 100%;
     box-sizing: border-box;
     overflow-wrap: break-word;
-}
-
-.right-sidebar {
-    background-color: lightgray;
 }
 
 .right-sidebar img {
@@ -56,8 +48,20 @@ main > div {
     box-sizing: border-box;
 }
 
-img {
-    border: 3px solid rgb(170, 255, 0);
+#propic {
+    border: 3px solid red;
+     width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border: none;
+    clip-path: polygon(
+        50% 0%,
+        93% 25%,
+        93% 75%,
+        50% 100%,
+        7% 75%,
+        7% 25%
+    );
 }
 
 main > header img {
@@ -71,8 +75,7 @@ footer {
 }
 
 #myName {
-    font-family: Georgia, serif;
-}
+    font-family: "Lucida Console", monospace;
 
 main section {
     width: 100%;
