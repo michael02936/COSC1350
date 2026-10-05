@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tip Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="calculator">
+
+    <h1>Tip Calculator</h1>
+
+    <form>
+
+        <label for="bill">Bill Amount:</label>
+        <input type="number" id="bill" name="bill">
+
+        <label for="service">Service Quality:</label>
+        <select id="service" name="service">
+            <option value="25">Excellent (25%)</option>
+            <option value="20">Good (20%)</option>
+            <option value="15">Fair (15%)</option>
+            <option value="10">Poor (10%)</option>
+        </select>
+
+        <br>
+
+        <button type="button" id="calculate">Calculate Tip</button>
+
+    </form>
+
+</div>
+<button onclick="window.location.href='index.html'">
+            Back
+        </button>
+</body>
+</html>
