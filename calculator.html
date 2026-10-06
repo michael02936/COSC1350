@@ -1,38 +1,46 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <title>Tip Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <script src="calculator.js"></script>
 </head>
 
 <body>
 
 <div class="calculator">
 
-    <h1>Tip Calculator</h1>
 
-    <form>
+<h1>Tip Calculator</h1>
 
-        <label for="bill">Bill Amount:</label>
-        <input type="number" id="bill" name="bill">
+<form>
 
-        <label for="service">Service Quality:</label>
-        <select id="service" name="service">
-            <option value="25">Excellent (25%)</option>
-            <option value="20">Good (20%)</option>
-            <option value="15">Fair (15%)</option>
-            <option value="10">Poor (10%)</option>
-        </select>
+    <label for="bill">Bill Amount:</label>
+    <input type="number" id="bill" name="bill">
 
-        <br>
+    <label for="service">Service Quality:</label>
+    <select id="service" name="service">
+        <option value="25">Excellent (25%)</option>
+        <option value="20">Good (20%)</option>
+        <option value="15">Fair (15%)</option>
+        <option value="10">Poor (10%)</option>
+    </select>
 
-        <button type="button" id="calculate">Calculate Tip</button>
+    <br>
 
-    </form>
+    <button type="button" id="calculate">Calculate Tip</button>
+
+    <p id="output"></p>
+
+</form>
+
 
 </div>
+
 <button onclick="window.location.href='index.html'">
-            Back
-        </button>
+    Back
+</button>
+
 </body>
 </html>
