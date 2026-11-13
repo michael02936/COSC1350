@@ -122,13 +122,8 @@ draw = () => {
     // Draw the ball and paddle.
     ballRender();
     paddleRender();
-};
 
-// Refresh the game every 40 milliseconds.
-const refreshRate = 40;
-const intervalID = setInterval(draw, refreshRate);
-
-// Bounce the ball off the paddle.
+    // Bounce the ball off the paddle.
 if (
     yPos + ballRadius >= yPaddle &&
     xPos >= xPaddle &&
@@ -136,4 +131,10 @@ if (
     yMoveDist > 0
 ) {
     yMoveDist = -yMoveDist;
-}
+};
+
+// Refresh the game every 40 milliseconds.
+const refreshRate = 40;
+const intervalID = setInterval(draw, refreshRate);
+
+
