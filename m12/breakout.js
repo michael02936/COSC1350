@@ -127,3 +127,13 @@ draw = () => {
 // Refresh the game every 40 milliseconds.
 const refreshRate = 40;
 const intervalID = setInterval(draw, refreshRate);
+
+// Bounce the ball off the paddle.
+if (
+    yPos + ballRadius >= yPaddle &&
+    xPos >= xPaddle &&
+    xPos <= xPaddle + paddleWidth &&
+    yMoveDist > 0
+) {
+    yMoveDist = -yMoveDist;
+}
