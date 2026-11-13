@@ -119,22 +119,23 @@ draw = () => {
         xPaddle = canvas.width - paddleWidth;
     }
 
+    // Bounce the ball off the paddle.
+    if (
+        yPos + ballRadius >= yPaddle &&
+        yPos - ballRadius <= yPaddle + paddleHeight &&
+        xPos >= xPaddle &&
+        xPos <= xPaddle + paddleWidth &&
+        yMoveDist > 0
+    ) {
+        yMoveDist = -yMoveDist;
+    }
+
     // Draw the ball and paddle.
     ballRender();
     paddleRender();
 
-    // Bounce the ball off the paddle.
-if (
-    yPos + ballRadius >= yPaddle &&
-    xPos >= xPaddle &&
-    xPos <= xPaddle + paddleWidth &&
-    yMoveDist > 0
-) {
-    yMoveDist = -yMoveDist;
 };
 
 // Refresh the game every 40 milliseconds.
 const refreshRate = 40;
 const intervalID = setInterval(draw, refreshRate);
-
-
