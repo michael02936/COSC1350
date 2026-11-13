@@ -35,14 +35,14 @@ let moveRight = false;
 ballRender = () => {
     ctx.beginPath();
     ctx.arc(xPos, yPos, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#38bdf8";
+    ctx.fillStyle = "#ffffff";
     ctx.fill();
     ctx.closePath();
 };
 
 // Draw the paddle.
 paddleRender = () => {
-    ctx.fillStyle = "#facc15";
+    ctx.fillStyle = "#5d0f70";
     ctx.fillRect(xPaddle, yPaddle, paddleWidth, paddleHeight);
 };
 
@@ -102,12 +102,12 @@ draw = () => {
 
     // Move the paddle left.
     if (moveLeft) {
-        xPaddle -= 3;
+        xPaddle -= 5;
     }
 
     // Move the paddle right.
     if (moveRight) {
-        xPaddle += 3;
+        xPaddle += 5;
     }
 
     // Keep the paddle inside the canvas.
