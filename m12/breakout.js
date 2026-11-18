@@ -3,7 +3,7 @@
  *
  * breakout.js
  * Author: Michael
- * Date: 11/13/26
+ * Date: 11/17/26
  * Project for COSC 1350
  *
  */
@@ -31,6 +31,28 @@ let yPaddle = canvas.height - 30;
 let moveLeft = false;
 let moveRight = false;
 
+// Brick information.
+let brickRows = 4;
+let brickColumns = 6;
+let brickWidth = 90;
+let brickHeight = 25;
+let brickPadding = 10;
+let brickTopOffset = 40;
+let brickLeftOffset = 5;
+
+// Array to hold the bricks.
+let bricks = [];
+
+for (let r = 0; r < brickRows; r++) {
+    for (let c = 0; c < brickColumns; c++) {
+        bricks.push({
+            x: brickLeftOffset + c * (brickWidth + brickPadding),
+            y: brickTopOffset + r * (brickHeight + brickPadding),
+            hit: false
+        });
+    }
+}
+
 // Draw the ball.
 ballRender = () => {
     ctx.beginPath();
@@ -44,6 +66,21 @@ ballRender = () => {
 paddleRender = () => {
     ctx.fillStyle = "#5d0f70";
     ctx.fillRect(xPaddle, yPaddle, paddleWidth, paddleHeight);
+};
+
+// Draw the bricks.
+brickRender = () => {
+    for (let i = 0; i < bricks.length; i++) {
+        if (!bricks[i].hit) {
+            ctx.fillStyle = "#9b59b6";
+            ctx.fillRect(
+                bricks[i].x,
+                bricks[i].y,
+                brickWidth,
+                brickHeight
+            );
+        }
+    }
 };
 
 // Check when a key is pressed.
@@ -91,13 +128,24 @@ draw = () => {
         xMoveDist = -xMoveDist;
     }
 
-    // Bounce off the top and bottom walls.
-    if (yPos > canvas.height - ballRadius) {
+    // Bounce off the top wall.
+    if (yPos < ballRadius) {
         yMoveDist = -yMoveDist;
     }
 
-    if (yPos < ballRadius) {
-        yMoveDist = -yMoveDist;
+    // Check for collisions with bricks.
+    for (let i = 0; i < bricks.length; i++) {
+        if (!bricks[i].hit) {
+            if (
+                xPos > bricks[i].x &&
+                xPos < bricks[i].x + brickWidth &&
+                yPos > bricks[i].y &&
+                yPos < bricks[i].y + brickHeight
+            ) {
+                yMoveDist = -yMoveDist;
+                bricks[i].hit = true;
+            }
+        }
     }
 
     // Move the paddle left.
@@ -130,7 +178,15 @@ draw = () => {
         yMoveDist = -yMoveDist;
     }
 
-    // Draw the ball and paddle.
+    // Check if the ball misses the paddle.
+    if (yPos > canvas.height - ballRadius) {
+        clearInterval(intervalID);
+        alert("Game Over!");
+        return;
+    }
+
+    // Draw the bricks, ball, and paddle.
+    brickRender();
     ballRender();
     paddleRender();
 
