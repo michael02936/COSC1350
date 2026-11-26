@@ -12,22 +12,20 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-// Get the score and reset button from the webpage.
+// Get score and reset button.
 const scoreDisplay = document.getElementById("score");
 const resetButton = document.getElementById("resetButton");
 
 // Ball information.
 const ballRadius = 15;
-let xPos;
-let yPos;
-let xMoveDist;
-let yMoveDist;
+let balls = [];
 
 // Paddle information.
 const paddleWidth = 100;
 const paddleHeight = 15;
 let xPaddle;
 const yPaddle = canvas.height - 30;
+const paddleSpeed = 8;
 
 // Keyboard movement.
 let moveLeft = false;
@@ -63,22 +61,33 @@ function createBricks() {
     }
 }
 
+// Create a new ball.
+function createBall(x, y, isMain) {
+    return {
+        x: x,
+        y: y,
+        dx: isMain ? 3 : (Math.random() < 0.5 ? -3 : 3),
+        dy: 3,
+        color: isMain ? "#ffffff" : "#00aaff",
+        isMain: isMain
+    };
+}
+
 // Reset the ball and paddle.
 function resetPositions() {
-    xPos = canvas.width / 2;
-    yPos = canvas.height / 2;
-    xMoveDist = 3;
-    yMoveDist = 3;
+    balls = [createBall(canvas.width / 2, canvas.height / 2, true)];
     xPaddle = (canvas.width - paddleWidth) / 2;
 }
 
-// Draw the ball.
+// Draw all the balls.
 function ballRender() {
-    ctx.beginPath();
-    ctx.arc(xPos, yPos, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
-    ctx.closePath();
+    for (let ball of balls) {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = ball.color;
+        ctx.fill();
+        ctx.closePath();
+    }
 }
 
 // Draw the paddle.
@@ -89,12 +98,12 @@ function paddleRender() {
 
 // Draw the bricks.
 function brickRender() {
-    for (let i = 0; i < bricks.length; i++) {
-        if (!bricks[i].hit) {
+    for (let brick of bricks) {
+        if (!brick.hit) {
             ctx.fillStyle = "#9b59b6";
             ctx.fillRect(
-                bricks[i].x,
-                bricks[i].y,
+                brick.x,
+                brick.y,
                 brickWidth,
                 brickHeight
             );
@@ -138,6 +147,13 @@ function updateScore() {
     scoreDisplay.textContent = score;
 }
 
+// Give a brick a 25% chance to spawn a blue ball.
+function spawnExtraBall(x, y) {
+    if (Math.random() < 0.25) {
+        balls.push(createBall(x, y, false));
+    }
+}
+
 // End the game.
 function endGame(message) {
     gameOver = true;
@@ -147,7 +163,6 @@ function endGame(message) {
 
 // Main game function.
 function draw() {
-
     if (gameOver) {
         return;
     }
@@ -155,43 +170,13 @@ function draw() {
     // Clear the canvas.
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Move the ball.
-    xPos += xMoveDist;
-    yPos += yMoveDist;
-
-    // Bounce off the left and right walls.
-    if (xPos + ballRadius >= canvas.width ||
-        xPos - ballRadius <= 0) {
-        xMoveDist = -xMoveDist;
-    }
-
-    // Bounce off the top wall.
-    if (yPos - ballRadius <= 0) {
-        yMoveDist = -yMoveDist;
-    }
-
-    // Check for collisions with bricks.
-    for (let i = 0; i < bricks.length; i++) {
-        if (!bricks[i].hit &&
-            xPos + ballRadius >= bricks[i].x &&
-            xPos - ballRadius <= bricks[i].x + brickWidth &&
-            yPos + ballRadius >= bricks[i].y &&
-            yPos - ballRadius <= bricks[i].y + brickHeight) {
-
-            yMoveDist = -yMoveDist;
-            bricks[i].hit = true;
-            updateScore();
-        }
-    }
-
-    // Move the paddle left.
+    // Move the paddle.
     if (moveLeft) {
-        xPaddle -= 5;
+        xPaddle -= paddleSpeed;
     }
 
-    // Move the paddle right.
     if (moveRight) {
-        xPaddle += 5;
+        xPaddle += paddleSpeed;
     }
 
     // Keep the paddle inside the canvas.
@@ -203,21 +188,68 @@ function draw() {
         xPaddle = canvas.width - paddleWidth;
     }
 
-    // Bounce the ball off the paddle.
-    if (
-        yPos + ballRadius >= yPaddle &&
-        yPos - ballRadius <= yPaddle + paddleHeight &&
-        xPos >= xPaddle &&
-        xPos <= xPaddle + paddleWidth &&
-        yMoveDist > 0
-    ) {
-        yMoveDist = -yMoveDist;
-    }
+    // Move and check every ball.
+    for (let i = balls.length - 1; i >= 0; i--) {
+        let ball = balls[i];
 
-    // Check if the ball misses the paddle.
-    if (yPos - ballRadius > canvas.height) {
-        endGame("Game Over! Your score was " + score);
-        return;
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        // Bounce off the left and right walls.
+        if (ball.x + ballRadius >= canvas.width ||
+            ball.x - ballRadius <= 0) {
+            ball.dx = -ball.dx;
+        }
+
+        // Bounce off the top wall.
+        if (ball.y - ballRadius <= 0) {
+            ball.dy = Math.abs(ball.dy);
+        }
+
+        // Check for collisions with bricks.
+        for (let brick of bricks) {
+            if (!brick.hit &&
+                ball.x + ballRadius >= brick.x &&
+                ball.x - ballRadius <= brick.x + brickWidth &&
+                ball.y + ballRadius >= brick.y &&
+                ball.y - ballRadius <= brick.y + brickHeight) {
+
+                brick.hit = true;
+                ball.dy = -ball.dy;
+
+                // Add points for breaking a brick.
+                updateScore();
+
+                // Chance to spawn another blue ball.
+                spawnExtraBall(ball.x, ball.y);
+
+                break;
+            }
+        }
+
+        // Bounce off the paddle.
+        if (
+            ball.y + ballRadius >= yPaddle &&
+            ball.y - ballRadius <= yPaddle + paddleHeight &&
+            ball.x >= xPaddle &&
+            ball.x <= xPaddle + paddleWidth &&
+            ball.dy > 0
+        ) {
+            ball.dy = -Math.abs(ball.dy);
+        }
+
+        // Check if a ball falls off the bottom.
+        if (ball.y - ballRadius > canvas.height) {
+
+            // The original white ball ends the game.
+            if (ball.isMain) {
+                endGame("Game Over! Your score was " + score);
+                return;
+            }
+
+            // Blue balls simply disappear.
+            balls.splice(i, 1);
+        }
     }
 
     // Check if all bricks have been broken.
@@ -247,6 +279,7 @@ function startGame() {
     createBricks();
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     brickRender();
     ballRender();
     paddleRender();
@@ -257,5 +290,5 @@ function startGame() {
 // Reset button event.
 resetButton.addEventListener("click", startGame);
 
-// Start the game when the page loads.
+// Start the game.
 startGame();
