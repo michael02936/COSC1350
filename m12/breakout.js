@@ -154,6 +154,47 @@ function spawnExtraBall(x, y) {
     }
 }
 
+// Check if balls collide with each other.
+function checkBallCollisions() {
+    for (let i = 0; i < balls.length; i++) {
+        for (let j = i + 1; j < balls.length; j++) {
+
+            let ball1 = balls[i];
+            let ball2 = balls[j];
+
+            let dx = ball2.x - ball1.x;
+            let dy = ball2.y - ball1.y;
+
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Check if the balls are touching.
+            if (distance < ballRadius * 2 && distance > 0) {
+
+                // Separate the balls so they do not overlap.
+                let overlap = ballRadius * 2 - distance;
+                let nx = dx / distance;
+                let ny = dy / distance;
+
+                ball1.x -= nx * overlap / 2;
+                ball1.y -= ny * overlap / 2;
+
+                ball2.x += nx * overlap / 2;
+                ball2.y += ny * overlap / 2;
+
+                // Swap their movement directions.
+                let tempDX = ball1.dx;
+                let tempDY = ball1.dy;
+
+                ball1.dx = ball2.dx;
+                ball1.dy = ball2.dy;
+
+                ball2.dx = tempDX;
+                ball2.dy = tempDY;
+            }
+        }
+    }
+}
+
 // End the game.
 function endGame(message) {
     gameOver = true;
@@ -251,6 +292,9 @@ function draw() {
             balls.splice(i, 1);
         }
     }
+
+    // Check for collisions between balls.
+    checkBallCollisions();
 
     // Check if all bricks have been broken.
     if (bricks.every(brick => brick.hit)) {
